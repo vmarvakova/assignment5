@@ -21,7 +21,7 @@ Write a function `getSquare(int row, int col)` that returns the value in the cel
 
 # b) Setting the value of a Sudoku square [4 marks]
 
-Write a function `setSquare(int row, int col, int value)` that sets the value in the cell in the square at the given row and column, then updates the sets of possible values in the grid to remove choices that have been eliminated.  For instance, if we put a '3' on a given row, then nothing else on that row can have the value 3.
+Write a function `setSquare(int row, int col, int value)` that sets the value in the cell in the square at the given row and column, then updates the sets of possible values in the rest of the grid to remove choices that have been eliminated.  For instance, if we put a '3' on a given row, then nothing else on that row can have the value 3.
 
 The implementation of setSquare is split into two parts.
 
@@ -36,7 +36,7 @@ Then, a loop begins that does the following:
  - All the other squares in the same *box*.  A 9x9 grid is divided into 9 boxes, each 3x3: no two values in the same box can have the same value.  For larger grids (e.g. 16x16), the size of the box is always the square root of the size of the grid.
  
 
-If at any point the set of value for a square becomes empty, the function should return false: it has been shown that there is no value that can go in a square.
+If at any point the set of values for a square becomes empty, the function should return false: it has been shown that there is no value that can go in a square.
 
 The loop should continue whilst values are still being removed from the sets of possible values.  The reason for this is that after setting the given square, we might end up with only one option being left for some other squares on the grid.  For instance, if on a given row some of the squares had the sets:
 
@@ -107,7 +107,7 @@ Once you have implemented these functions, you can test your code by using Bread
 
 # d) Advanced [5 marks]
 
-We can improve on the basic sudoku solver in a few ways.   Your mark for this part will be based on how quickly your solution works: the faster it runs, the higher the marks.  As well as 9x9 boards, I will be testing your solution on 16x16 Sudoku boards.
+We can improve on the basic sudoku solver in a few ways.   Your mark for this part will be based on how quickly your solution works: the faster it runs, the higher the marks.  As well as 9x9 boards, I will be testing your solution on larger (e.g. 16x16) Sudoku boards.
 
 ## A better setSquare
 
@@ -158,7 +158,7 @@ NB: Your BestFirstSearch code should never assume `Searchable` objects are Sudok
 
 One last edit.  In the successors function, we choose a square, and make successors corresponding to setting that square to have each of its possible values.  We keep only the successors for which setSquare returned true.
 
-If when we do this, we keep only one successor, then instead of returning a vector of just that one successor, recursively call `successors()` on that; and return what *it* returns.
+If when we do this, we keep only one successor -- and that successor isn't a solution -- then instead of returning a vector of just that one successor, recursively call `successors()` on that; and return what *it* returns.
 
 The intuition for this is as follows.  If setSquare only returned true for one of the possible successors, we have shown that, actually, having tried all the options, only one of the possible values for that square was acceptable.  Thus, we can instead return the successors of that one valid option.  We only need to return successors to search, to go on the queue, if there is more than one option to choose from.
 
