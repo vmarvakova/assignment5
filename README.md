@@ -1,16 +1,16 @@
-# Sudoku
-
-In this coursework you will be working on writing code that will solve Sudoku puzzles.
-
-To avoid setting a deadline for this work during reading week, and so everyone has a lab session before the deadline, both parts of this assignment are due in on *Wednesday the 9th of November at 11pm*.  It is highly recommended though that you aim to complete the first parts by Wednesday the 2nd of November, to spread out the work.
-
-As with the previous two assignments, part (d) is advanced and worth 5 marks; parts (a) to (c) add up to 10 marks.
+<!--# Sudoku-->
+<!---->
+<!--In this coursework you will be working on writing code that will solve Sudoku puzzles.-->
+<!---->
+<!--To avoid setting a deadline for this work during reading week, and so everyone has a lab session before the deadline, both parts of this assignment are due in on *Wednesday the 9th of November at 11pm*.  It is highly recommended though that you aim to complete the first parts by Wednesday the 2nd of November, to spread out the work.-->
+<!---->
+<!--As with the previous two assignments, part (d) is advanced and worth 5 marks; parts (a) to (c) add up to 10 marks.-->
 
 # a) Making a Sudoku board class [3 marks]
 
-In the file `Sudoku.h` make a class `Sudoku` that holds an *incomplete* [Sudoku](https://en.wikipedia.org/wiki/Sudoku) solution.
-
-It should have a constructor that takes a single argument -- the size of the board.  For instance, for a 9x9 Sudoku, the constructor would be given the value 9.
+<!--In the file `Sudoku.h` make a class `Sudoku` that holds an *incomplete* [Sudoku](https://en.wikipedia.org/wiki/Sudoku) solution.-->
+<!---->
+<!--It should have a constructor that takes a single argument -- the size of the board.  For instance, for a 9x9 Sudoku, the constructor would be given the value 9.-->
 
 You need to store the incomplete solution as a member variable. The *recommended* way to do this is to have a vector of vectors (a square array), in which each square is represented as a `set<int>` that holds the values that could possibly go in that square.  Initially, for a 9x9 Sudoku, if the grid is completely blank, each set will contain the values `{1,2,3,4,5,6,7,8,9}`.  When a square is given some value, the set is cleared and replaced with a set containing just that one value -- the other options are removed.
 
@@ -22,7 +22,7 @@ Write a function `getSquare(int row, int col)` that returns the value in the cel
 # b) Setting the value of a Sudoku square [4 marks]
 
 Write a function `setSquare(int row, int col, int value)` that sets the value in the cell in the square at the given row and column, then updates the sets of possible values in the rest of the grid to remove choices that have been eliminated.  For instance, if we put a '3' on a given row, then nothing else on that row can have the value 3.
-
+ 
 The implementation of setSquare is split into two parts.
 
 First, the easy part: the set of possible values for that cell is cleared, and `value` is inserted.  This forces that cell to have that value.
@@ -74,6 +74,15 @@ For this, we are going to use the Searchable class.  This is an *abstract class*
 
 - `isSolution()`: this returns true if the puzzle has been solved.  For Sudoku, this means all the squares contain just one value.
 - `write(ostream & o)`: a debugging function to print the board to screen.
+
+<!--std::ostream& operator <<(std::ostream& out, const Board &b)-->
+<!--{-->
+<!--if (b.verbose)-->
+<!--return b.printDetailed(out);-->
+<!--return b.printSimple(out);-->
+<!--}-->
+
+
 - `heuristicValue()`: an estimate of how far the puzzle is from being solved.  We will return to this in part (d)
 - `successors()`: in a situation where a guess is needed, this returns several new puzzle objects, each of which corresponds to a different guess having been made.
 

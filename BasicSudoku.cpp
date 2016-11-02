@@ -24,7 +24,6 @@ bool fillBoard(Sudoku * board, const vector<string> & fillWith) {
             }
         }
     }
-    
     return true;
 }
 
