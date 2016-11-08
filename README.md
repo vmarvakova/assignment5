@@ -74,15 +74,39 @@ For this, we are going to use the Searchable class.  This is an *abstract class*
 
 - `isSolution()`: this returns true if the puzzle has been solved.  For Sudoku, this means all the squares contain just one value.
 - `write(ostream & o)`: a debugging function to print the board to screen.
+std::ostream& operator << (std::ostream &os, const Puzzle &p)
+{
+for (int I = 0; I < 9; ++I)
+{
+for (int J = 0; J < 9; ++J)
+{
+if (J == 3 || J == 6)
+{
+os << "|  ";
+}
 
-<!--std::ostream& operator <<(std::ostream& out, const Board &b)-->
-<!--{-->
-<!--if (b.verbose)-->
-<!--return b.printDetailed(out);-->
-<!--return b.printSimple(out);-->
-<!--}-->
+if (p.Cells[J][I] == 0)
+os << p.BlankChar << "  ";
+else
+os << p.Cells[J][I] << "  ";
+}
 
+os << "\n";
+if (I != 8)
+{
+os << "\t |\t     |\n";
+}
 
+if (I == 2 || I == 5)
+{
+os << "--------- ----------- ---------";
+os << "\n";
+os << "\t |\t     |\n";
+}
+}
+return os;
+}
+z
 - `heuristicValue()`: an estimate of how far the puzzle is from being solved.  We will return to this in part (d)
 - `successors()`: in a situation where a guess is needed, this returns several new puzzle objects, each of which corresponds to a different guess having been made.
 
