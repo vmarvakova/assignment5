@@ -16,13 +16,13 @@ using std::set;
 using std::cout;
 using std::endl;
 // TODO: Your Sudoku class goes here:
-class Sudoku:public Searchable{
+class Sudoku: public Searchable{
     
 public:
     
     vector<vector<set<int>>> incomplete;
  //setting the board with the incomplete solution
-    Sudoku(const int&size)
+    Sudoku(int size)
        : incomplete(size){
     
             int grid[size];
