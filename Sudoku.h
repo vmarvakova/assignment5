@@ -44,7 +44,7 @@ public:
         }
 
 //returning the vallue in the square if there is only one option and -1 if there are more
-    int getSquare(int const&r, int const&c) const{
+    int getSquare(int r, int c) const{
                 set <int> block = incomplete[r][c];
                 if (block.size() == 1) {
         
@@ -109,7 +109,7 @@ public:
     //done
     //Check whether grid[i][j] is valid in the 3 by 3 box
     
-    bool square(int const rows, int const cols){
+    bool square(int rows, int  cols){
         
         for (int row = (rows / 3) * 3; row < (rows / 3) * 3 + 3; row++){
             
@@ -125,7 +125,7 @@ public:
     }
     
         //Check whether grid[i][j] is valid by row
-    bool rowC(int const row, int const column){
+    bool rowC(int row, int column){
         
     set<int>gr = incomplete[row][column];
         for (int i = 0; i < 9; i++){
@@ -146,7 +146,7 @@ public:
     }
     
         //Check whether grid[i][j] is valid by column
-    bool columnC(int const row, int const col){
+    bool columnC(int  row, int  col){
         
              set<int>bl = incomplete[row][col];
         for (int j = 0; j < 9; j++){
