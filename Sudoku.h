@@ -249,14 +249,14 @@ public:
                                 }
                                 
                          
-                            }
-                        }
+                            
+                        
             if(option.size()==10){
                 
                 delete(sudokuBoard);
             }
-            
-                        return suc;
+                            }
+                        }           return suc;
                         
                     }
 
