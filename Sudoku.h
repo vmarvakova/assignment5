@@ -16,13 +16,13 @@ using std::set;
 using std::cout;
 using std::endl;
 // TODO: Your Sudoku class goes here:
-class Sudoku{
+class Sudoku:public Searchable{
     
 public:
     
     vector<vector<set<int>>> incomplete;
  //setting the board with the incomplete solution
-    Sudoku(int size)
+    Sudoku(const int&size)
        : incomplete(size){
     
             int grid[size];
@@ -114,9 +114,9 @@ public:
         for (int row = (rows / 3) * 3; row < (rows / 3) * 3 + 3; row++){
             
             for (int col = (cols / 3) * 3; col < (cols / 3) * 3 + 3; col++){
-                
-                if (!(row == rows && col == cols)){
-                    if (incomplete[row][col].count(*incomplete[rows][cols].begin())==1) incomplete[row][col].erase(*incomplete[rows][cols].begin());
+        
+            if (!(row == rows && col == cols)){
+                if (incomplete[row][col].count(*incomplete[rows][cols].begin())==1) incomplete[row][col].erase(*incomplete[rows][cols].begin());
                     if(incomplete[row][col].size()==0) return false;
                 }
             }
@@ -126,15 +126,16 @@ public:
     
         //Check whether grid[i][j] is valid by row
     bool rowC(int const row, int const column){
-    set<int>*gr = &incomplete[row][column];
+        
+    set<int>gr = incomplete[row][column];
         for (int i = 0; i < 9; i++){
             if (i != column){
             if (row != i && incomplete[row][column] == incomplete[i][column]){ return false;
             }
                 
-                if (incomplete[row][i].count(*gr->begin())==1) {
+                if (incomplete[row][i].count(*gr.begin())==1) {
                     
-                incomplete[row][i].erase(*gr->begin());
+                incomplete[row][i].erase(*gr.begin());
                 }
                 
             
@@ -146,21 +147,103 @@ public:
     
         //Check whether grid[i][j] is valid by column
     bool columnC(int const row, int const col){
-             set<int>*bl = &incomplete[row][col];
+        
+             set<int>bl = incomplete[row][col];
         for (int j = 0; j < 9; j++){
             if (j != row){
                 if (col != j && incomplete[row][col] == incomplete[row][j]){
                             return false;
                                               }
                 
-                if (incomplete[j][col].count(*bl->begin())==1) {
+                if (incomplete[j][col].count(*bl.begin())==1) {
                     
-                incomplete[j][col].erase(*bl->begin());
+                incomplete[j][col].erase(*bl.begin());
                 }
             }
         }
         return true;
     }
+    
+    
+    int heuristicValue() const  {
+        
+    //empty for now go back d part
+    }
+    
+    //checks whether there is only one value in every square
+    bool isSolution() const {
+        int row =0;
+        int col=0;
+        for (row = 0; row < incomplete.size(); row++)
+        {
+            for (int col = 0; col < incomplete[row].size(); col++)
+            {
+                if (incomplete[row][col].size()>1) {
+                    
+                return false;
+                }
+                
+            }
+        }
+        return true;
+    }
+    
+
+  //printing the board
+     void write(ostream & ostr) const  {
+        for (int row = 0; row < incomplete.size(); row++)
+        {
+            for (int col = 0; col < incomplete[row].size(); col++)
+            {
+                if(getSquare(row,col)!=-1){
+                    
+                    std::cout<<getSquare(row,col)<<" ";
+                 }
+            }
+         
+                
+            }
+     }
+    
+        vector<unique_ptr<Searchable> > successors() const  {
+            //making an empty vector
+                    vector<unique_ptr<Searchable> > suc;
+            suc.clear();
+            std::set<int> option={1,2,3,4,5,6,7,8,9};
+                        int rows=0;
+                        int cols=0;
+                        
+        for (int row = 0; row < incomplete.size(); ++row)
+                        {
+    for (int col = 0; col<incomplete[row].size(); ++col)
+                            {
+                                if (incomplete[row][col].size()>1)  {
+                                    option=incomplete[row][col];
+                                    cols=col;
+                                    rows =row;
+                               
+                                }
+                            }
+                        }
+                        if (option.size()!=10){
+                            auto itr = option;
+                            for (itr:option){
+                                //making a copy fof the current sudoku object
+                                Sudoku * sudokuBoard = new Sudoku(*this);
+                                if (sudokuBoard->setSquare(rows,cols,itr)){
+                                    
+                            suc.push_back(unique_ptr<Searchable>(sudokuBoard));
+                                }
+                                
+                                if(option.size()==10){
+                                    
+                                    delete(sudokuBoard);}
+                            }
+                        }
+                        
+                        return suc;
+                        
+                    }
 
 
 
