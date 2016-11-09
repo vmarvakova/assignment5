@@ -22,7 +22,7 @@ public:
     
     vector<vector<set<int>>> incomplete;
  //setting the board with the incomplete solution
-    Sudoku(int size)
+    Sudoku(const int&size)
        : incomplete(size){
     
             int grid[size];
@@ -44,9 +44,9 @@ public:
         }
 
 //returning the vallue in the square if there is only one option and -1 if there are more
-    int getSquare(int r, int c) const{
+    int getSquare(const int r, const int c) const{
                 set <int> block = incomplete[r][c];
-                if (block.size() == 1) {
+                if (incomplete[r][c].size() == 1) {
         
                     return *block.begin();
                 }
