@@ -50,7 +50,6 @@ int main() {
         vector<string> easyBoard{"23 915   ",
                                  "   2  54 ",
                                  "6 7      ",
-                                 
                                  "  1     9",
                                  "89 5 3 17",
                                  "5     6  ",

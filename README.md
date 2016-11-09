@@ -11,13 +11,13 @@
 <!--In the file `Sudoku.h` make a class `Sudoku` that holds an *incomplete* [Sudoku](https://en.wikipedia.org/wiki/Sudoku) solution.-->
 <!---->
 <!--It should have a constructor that takes a single argument -- the size of the board.  For instance, for a 9x9 Sudoku, the constructor would be given the value 9.-->
-
-You need to store the incomplete solution as a member variable. The *recommended* way to do this is to have a vector of vectors (a square array), in which each square is represented as a `set<int>` that holds the values that could possibly go in that square.  Initially, for a 9x9 Sudoku, if the grid is completely blank, each set will contain the values `{1,2,3,4,5,6,7,8,9}`.  When a square is given some value, the set is cleared and replaced with a set containing just that one value -- the other options are removed.
-
-Write a function `getSquare(int row, int col)` that returns the value in the cell in the square at the given row and column:
-
-- If there is only one value in the set for that square, return the number in that set.
-- Otherwise, return -1 (a dummy value to indicate we don't know what should be in that square yet)
+<!---->
+<!--You need to store the incomplete solution as a member variable. The *recommended* way to do this is to have a vector of vectors (a square array), in which each square is represented as a `set<int>` that holds the values that could possibly go in that square.  Initially, for a 9x9 Sudoku, if the grid is completely blank, each set will contain the values `{1,2,3,4,5,6,7,8,9}`.  When a square is given some value, the set is cleared and replaced with a set containing just that one value -- the other options are removed.-->
+<!---->
+<!--Write a function `getSquare(int row, int col)` that returns the value in the cell in the square at the given row and column:-->
+<!---->
+<!--- If there is only one value in the set for that square, return the number in that set.-->
+<!--- Otherwise, return -1 (a dummy value to indicate we don't know what should be in that square yet)-->
 
 # b) Setting the value of a Sudoku square [4 marks]
 
@@ -48,7 +48,7 @@ The loop should continue whilst values are still being removed from the sets of 
 
 On the first pass of the loop, we would find the square containing `3` and remove this from the other sets on the row (and the other sets in the same column and box).  The row then looks like:
 
-`{4} {3}  {4,5}`
+<!--`{4} {3}  {4,5}`-->
 
 We then start the loop again, and find the square containing the value '4'.  This is removed from the other sets on the row (and column and box) to give:
 
@@ -73,6 +73,21 @@ For more complex puzzles, after putting in the initial values using setSquare, s
 For this, we are going to use the Searchable class.  This is an *abstract class* for puzzles, containing the following virtual functions:
 
 - `isSolution()`: this returns true if the puzzle has been solved.  For Sudoku, this means all the squares contain just one value.
+for (int i = 0; i < 9; i++) {
+
+int[] row = new int[9];
+int[] square = new int[9];
+int[] column = grid[i].clone();
+
+for (int j = 0; j < 9; j ++) {
+row[j] = grid[j][i];
+square[j] = grid[(i / 3) * 3 + j / 3][i * 3 % 9 + j % 3];
+}
+if (!(validate(column) && validate(row) && validate(square)))
+return false;
+}
+return true;
+}
 - `write(ostream & o)`: a debugging function to print the board to screen.
 std::ostream& operator << (std::ostream &os, const Puzzle &p)
 {
@@ -106,7 +121,7 @@ os << "\t |\t     |\n";
 }
 return os;
 }
-z
+
 - `heuristicValue()`: an estimate of how far the puzzle is from being solved.  We will return to this in part (d)
 - `successors()`: in a situation where a guess is needed, this returns several new puzzle objects, each of which corresponds to a different guess having been made.
 
