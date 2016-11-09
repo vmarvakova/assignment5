@@ -44,7 +44,7 @@ public:
         }
 
 //returning the vallue in the square if there is only one option and -1 if there are more
-    int getSquare(int const r, int const c) const{
+    int getSquare(int const&r, int const&c) const{
                 set <int> block = incomplete[r][c];
                 if (block.size() == 1) {
         
@@ -57,7 +57,7 @@ public:
 
     }
     
-    bool setSquare(int const row,int const col, int const value){
+    bool setSquare(int row,int col, int value){
         set<int>*block = &incomplete[row][col];
         block->clear();                         //clear for the new values
         incomplete[row][col].insert(value);
