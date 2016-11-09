@@ -57,10 +57,10 @@ public:
 
     }
     
-    bool setSquare(int row,int col, int value){
+    bool setSquare(int row,int col, int val){
         set<int>*block = &incomplete[row][col];
         block->clear();                         //clear for the new values
-        incomplete[row][col].insert(value);
+        incomplete[row][col].insert(val);
         
         int minus;
        int count;
@@ -107,35 +107,38 @@ public:
     
     
     //done
-    //Check whether grid[i][j] is valid in the 3 by 3 box
+    //Check whether grid[rows][cols] is valid in the 3 by 3 box
     
     bool square(int rows, int  cols){
-        
+                    set<int>*sq = &incomplete[rows][cols];
         for (int row = (rows / 3) * 3; row < (rows / 3) * 3 + 3; row++){
             
             for (int col = (cols / 3) * 3; col < (cols / 3) * 3 + 3; col++){
         
-            if (!(row == rows && col == cols)){
-                if (incomplete[row][col].count(*incomplete[rows][cols].begin())==1) incomplete[row][col].erase(*incomplete[rows][cols].begin());
-                    if(incomplete[row][col].size()==0) return false;
+            if (row != rows && col != cols){
+        if (incomplete[row][col].count(*sq->begin())==1) incomplete[row][col].erase(*sq->begin());
+                if(incomplete[row][col].size()==0){
+                    
+                    return false;
+                }
                 }
             }
         }
         return true;
     }
     
-        //Check whether grid[i][j] is valid by row
+        //Check whether grid[row][column] is valid by row
     bool rowC(int row, int column){
         
-    set<int>gr = incomplete[row][column];
-        for (int i = 0; i < 9; i++){
-            if (i != column){
-            if (row != i && incomplete[row][column] == incomplete[i][column]){ return false;
+    set<int>*gr = &incomplete[row][column];
+        for (int rows = 0; rows < 9; rows++){
+            if (rows != column){
+            if (row != rows && incomplete[row][column] == incomplete[rows][column]){ return false;
             }
                 
-                if (incomplete[row][i].count(*gr.begin())==1) {
+                if (incomplete[row][rows].count(*gr->begin())==1) {
                     
-                incomplete[row][i].erase(*gr.begin());
+                incomplete[row][rows].erase(*gr->begin());
                 }
                 
             
@@ -145,19 +148,19 @@ public:
         
     }
     
-        //Check whether grid[i][j] is valid by column
+        //Check whether grid[row][col] is valid by column
     bool columnC(int  row, int  col){
         
-             set<int>bl = incomplete[row][col];
+             set<int>*bl = &incomplete[row][col];
         for (int j = 0; j < 9; j++){
             if (j != row){
                 if (col != j && incomplete[row][col] == incomplete[row][j]){
                             return false;
                                               }
                 
-                if (incomplete[j][col].count(*bl.begin())==1) {
+                if (incomplete[j][col].count(*bl->begin())==1) {
                     
-                incomplete[j][col].erase(*bl.begin());
+                incomplete[j][col].erase(*bl->begin());
                 }
             }
         }
@@ -183,6 +186,7 @@ public:
                 return false;
                 }
                 
+                
             }
         }
         return true;
@@ -197,7 +201,7 @@ public:
             {
                 if(getSquare(row,col)!=-1){
                     
-                    std::cout<<getSquare(row,col)<<" ";
+                    std::cout<<getSquare(row,col)<<"  ";
                  }
             }
          
@@ -207,24 +211,33 @@ public:
     
         vector<unique_ptr<Searchable> > successors() const  {
             //making an empty vector
-                    vector<unique_ptr<Searchable> > suc;
+            
+            vector<unique_ptr<Searchable> > suc;
             suc.clear();
-            std::set<int> option={1,2,3,4,5,6,7,8,9};
-                        int rows=0;
-                        int cols=0;
+            int rows=0;
+            int cols=0;
+            std::set<int>option;
+            
+            for(int num=1;num<10;num++){
+                
+                option.insert(num);
+            }
+        
+            
                         
         for (int row = 0; row < incomplete.size(); ++row)
                         {
     for (int col = 0; col<incomplete[row].size(); ++col)
                             {
                                 if (incomplete[row][col].size()>1)  {
-                                    option=incomplete[row][col];
                                     cols=col;
                                     rows =row;
+                                    option=incomplete[row][col];
                                
                                 }
                             }
                         }
+         
                         if (option.size()!=10){
                             auto itr = option;
                             for (itr:option){
@@ -235,12 +248,14 @@ public:
                             suc.push_back(unique_ptr<Searchable>(sudokuBoard));
                                 }
                                 
-                                if(option.size()==10){
-                                    
-                                    delete(sudokuBoard);}
+                         
                             }
                         }
-                        
+            if(option.size()==10){
+                
+                delete(sudokuBoard);
+            }
+            
                         return suc;
                         
                     }
